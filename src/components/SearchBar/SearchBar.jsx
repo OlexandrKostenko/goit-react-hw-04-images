@@ -1,4 +1,6 @@
-import { Component } from "react"
+import { Component } from "react";
+import { PropTypes } from 'prop-types';
+import { SearchBarStyled, SearchButton, SearchButtonLabel, SearchForm, SearchInput } from "./SearchBar.styled";
 
 export class SearchBar extends Component {
     state = {
@@ -17,13 +19,13 @@ export class SearchBar extends Component {
 
     render() {
     return (
-    <header >
-  <form onSubmit={this.handleSearch}>
-    <button type="submit" >
-      <span >Search</span>
-    </button>
+    <SearchBarStyled>
+  <SearchForm onSubmit={this.handleSearch}>
+    <SearchButton type="submit" >
+      <SearchButtonLabel >Search</SearchButtonLabel>
+    </SearchButton>
 
-    <input
+    <SearchInput
       onChange={this.handleChange}
       value={this.state.query}
       name='query'
@@ -32,7 +34,11 @@ export class SearchBar extends Component {
       type="text"
       placeholder="Search images and photos"
     />
-  </form>
-</header>
+  </SearchForm>
+</SearchBarStyled>
 )
 }};
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+}

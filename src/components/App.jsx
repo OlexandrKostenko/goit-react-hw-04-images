@@ -3,8 +3,9 @@ import { SearchBar } from "./SearchBar/SearchBar";
 import {Loader} from "./Loader/Loader";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
 import axios from "axios";
-
-
+import { Wrapper } from "./App.styled";
+import { Button } from "./Button/Button";
+import { Modal } from "./Modal/Modal";
 
 export class App extends Component {
   state= {
@@ -13,6 +14,8 @@ export class App extends Component {
     status: 'idle',
     images: [],
     totalHits: 0,
+    src: '',
+    alt: '',
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -35,7 +38,7 @@ export class App extends Component {
   };
 
   handleFetch = async () => {
-    this.setState({status: 'loading'});
+    this.setState({status: 'pending'});
     try {
       const { query, page} = this.state;
       const results = await this.fetch(query, page);
@@ -50,11 +53,13 @@ export class App extends Component {
     }
     } catch (error){
       console.log(error)
+    } finally {
+      this.setState({status: 'success'})
     }
   }
 
   handleSubmit = query => {
-    this.setState({query});
+    this.setState({query, images:[]});
   };
 
   handleLoadMore = () => {
@@ -63,22 +68,35 @@ export class App extends Component {
     }
   };
 
+  handleImageClick = event => {
+    this.setState({ src: event.target.src, alt: event.target.alt});
+  }
+
+  handleOverlayClick = event => {
+    if (event.currentTarget === event.target) {
+      this.setState({src: '', alt:''});
+    }
+  }
+
+  handleKeyDown = event => {
+    if(event.key === 'Escape') {
+      this.setState({src: '', alt:''});
+    }
+  }
+
   render () {
+    const {status, totalHits, images, src, alt} = this.state;
     return(
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
+    <Wrapper>
       <SearchBar onSubmit={this.handleSubmit}></SearchBar>
-      <Loader></Loader>
-      <ImageGallery images={this.state.images}
-      totalHits={this.state.totalHits}></ImageGallery>
-    </div>
+      {status === 'pending' && <Loader></Loader>}
+      {totalHits > 0 && <ImageGallery 
+      images={images}
+      totalHits={totalHits}
+      onImageClick={this.handleImageClick}
+      ></ImageGallery>}
+      {images.length < totalHits ? <Button onClick={this.handleLoadMore}></Button> : null}
+      {src && <Modal src={src} alt={alt} imagesonClick={this.handleOverlayClick} onEscPress={this.handleKeyDown}></Modal>}
+    </Wrapper>
   )};
 };
