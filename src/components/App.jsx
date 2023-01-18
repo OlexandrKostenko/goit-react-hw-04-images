@@ -96,7 +96,7 @@ export class App extends Component {
       onImageClick={this.handleImageClick}
       ></ImageGallery>}
       {images.length < totalHits ? <Button onClick={this.handleLoadMore}></Button> : null}
-      {src && <Modal src={src} alt={alt} imagesonClick={this.handleOverlayClick} onEscPress={this.handleKeyDown}></Modal>}
+      {src && <Modal src={src} alt={alt} onClick={this.handleOverlayClick} onEscPress={this.handleKeyDown}></Modal>}
     </Wrapper>
   )};
 };
