@@ -59,7 +59,7 @@ export class App extends Component {
   }
 
   handleSubmit = query => {
-    this.setState({query, images:[]});
+    this.setState({query, images:[], page: 1});
   };
 
   handleLoadMore = () => {
