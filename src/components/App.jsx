@@ -64,15 +64,15 @@ export const App = () => {
     }
   };
  
-    return (
-      <Wrapper>
-        <SearchBar onSubmit={handleSubmit}></SearchBar>
-        {status === 'pending' && <Loader></Loader>}
-        {totalHits > 0 && <ImageGallery
-          images={images}
-          totalHits={totalHits}
-        ></ImageGallery>}
-        {images.length < totalHits ? <Button onClick={handleLoadMore}></Button> : null}
-      </Wrapper>
-    )
-  }
+  return (
+    <Wrapper>
+      <SearchBar onSubmit={handleSubmit}></SearchBar>
+      {status === 'pending' && <Loader></Loader>}
+      {totalHits > 0 && <ImageGallery
+        images={images}
+        totalHits={totalHits}
+      ></ImageGallery>}
+      {images.length < totalHits ? <Button onClick={handleLoadMore}></Button> : null}
+    </Wrapper>
+  )
+};
