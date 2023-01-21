@@ -1,26 +1,23 @@
-import { Component } from "react"
+import { useEffect } from "react"
 import { ModalWindow, Overlay } from "./Modal.styled"
 import { PropTypes } from 'prop-types';
 
-export class Modal extends Component {
-componentDidMount() {
-    window.addEventListener('keydown', this.props.onEscPress);
-};
+export const Modal = ({src, alt, onClick, onEscPress}) => {
 
-componentWillUnmount() {
-    window.removeEventListener('keydown', this.props.onEscPress);
-}
-    render () {
-    const {src, alt, onClick} = this.props;
+    useEffect(() => {
+        window.addEventListener('keydown', onEscPress);
+    
+        return () => { window.removeEventListener('keydown', onEscPress) }
+    });
+    
         return (
             <Overlay onClick={onClick}>
                 <ModalWindow>
-                <img src={src} alt={alt} />
+                    <img src={src} alt={alt} width='1024px'/>
                 </ModalWindow>
             </Overlay>
         )
-    }
-};
+    };
 
 Modal.propTypes = {
     src: PropTypes.string.isRequired,
